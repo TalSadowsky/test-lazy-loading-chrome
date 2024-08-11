@@ -1,0 +1,210 @@
+<html>
+  <head>
+    <style>
+      main {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .gallery-wrapper {
+        display: block;
+      }
+      .gallery {
+        display: grid;
+        width: 100%;
+        grid-auto-flow: dense;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 12px 0 0;
+        gap: 8px;
+      }
+
+      .a-wrapper {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        padding-left: 0;
+      }
+
+      .img-card-wrapper {
+        position: relative;
+        display: flex;
+        overflow: visible;
+        max-height: 560px;
+        flex-direction: column;
+        padding: 0px 8px 32px;
+      }
+
+      .img-card {
+        position: relative;
+      }
+
+      .placeholder {
+        padding-top: 100%;
+        width: 100%;
+      }
+      .carousel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+      .carousel-inner {
+        position: absolute;
+        display: flex;
+        transition: transform 0.5s ease;
+      }
+      .carousel-items {
+        width: 100%;
+        overflow: hidden;
+        border: 1px solid rgb(225, 225, 225);
+        margin-bottom: 8px;
+        background-color: rgb(225, 225, 225);
+        border-radius: 3px;
+        box-shadow: rgba(118, 118, 118, 0.4) 0px 0px 0px 0px,
+          rgba(118, 118, 118, 0.1) 0px 0px 0px;
+        transition: all 0.2s ease 0s;
+        display: flex;
+      }
+
+      .carousel-item {
+        width: 100%;
+        transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.35, 1);
+        display: flex;
+        transform: translateX(0px);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="gallery-wrapper">
+        <div class="gallery"></div>
+      </div>
+    </main>
+
+    <script type="module">
+      const main = document.querySelector(".gallery");
+      const defaults = [
+        "https://images.dunelm.com/30886702.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30890503_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30923316_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30891712_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30919802_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30890825_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30891107_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30917732_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30892498_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30891735_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30896665_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30898500_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30891452.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30893050.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30890498.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30919614.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30899749.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30920921.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30913970_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30891198_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30893500_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+        "https://images.dunelm.com/30923319_alt01.jpg?$v8srpgrid$&img404=noimagedefault",
+      ];
+
+      const images = [...defaults];
+
+      for (const src of images) {
+        const aEl = document.createElement("a");
+        aEl.setAttribute("class", "a-wrapper");
+        const imgCardWrapper = document.createElement("div");
+        imgCardWrapper.setAttribute("class", "img-card-wrapper");
+        const imgCard = document.createElement("div");
+        imgCard.setAttribute("class", "img-card");
+        const placeholder = document.createElement("div");
+        placeholder.setAttribute("class", "placeholder");
+        const carousel = document.createElement("div");
+        carousel.setAttribute("class", "carousel");
+        const carouselInner = document.createElement("div");
+        carouselInner.setAttribute("class", "carousel-inner");
+        const imgPlaceholder = document.createElement("img");
+        imgPlaceholder.setAttribute(
+          "src",
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAAXNSR0IArs4c6QAAAANQTFRFAAAAp3o92gAAAAF0Uk5TAEDm2GYAAAAMSURBVAiZY2AgDQAAADAAAUOUt2cAAAAASUVORK5CYII="
+        );
+        const carouselItems = document.createElement("div");
+        carouselItems.setAttribute("class", "carousel-items");
+        const carouselItem = document.createElement("div");
+        carouselItem.setAttribute("class", "carousel-item");
+        const svgWrapper = document.createElement("div");
+        const svgItem = document.createElement("svg");
+        svgItem.setAttribute(
+          "style",
+          "width: 16px; height: 16px; box-sizing: border-box; position: relative; top: -1px; display: block; position: absolute;"
+        );
+        svgWrapper.append(svgItem);
+        carouselItem.append(svgWrapper);
+        // const img = document.createElement("img");
+        // img.setAttribute("src", src + "&_cachebusting=" + Math.random());
+        // img.setAttribute("loading", "lazy");
+        // img.setAttribute("style", " width: 310px; display: block;");
+        //carouselItem.append(img);
+        carouselItems.append(carouselItem);
+        carouselInner.append(imgPlaceholder);
+        carouselInner.append(carouselItem);
+        carousel.append(carouselInner);
+        imgCard.append(placeholder);
+        imgCard.append(carousel);
+        aEl.append(imgCard);
+        imgCardWrapper.append(aEl);
+        main.append(imgCardWrapper);
+        imgPlaceholder.setAttribute("style", "display: none;");
+      }
+
+      let currentIndex = 0;
+
+      function updateCarousel(carousel, index) {
+        const carouselInner = carousel.querySelectorAll(".carousel-items");
+        carouselInner.forEach(
+          (el) => (el.style.transform = `translateX(-${index * 100}%)`)
+        );
+      }
+
+      function prevSlide() {
+        const carousels = document.querySelectorAll(".carousel");
+        carousels.forEach((carousel) => {
+          const items = carousel.querySelectorAll(".carousel-item");
+          currentIndex =
+            currentIndex === 0 ? items.length - 1 : currentIndex - 1;
+          updateCarousel(carousel, currentIndex);
+        });
+      }
+
+      function nextSlide() {
+        const carousels = document.querySelectorAll(".carousel");
+        carousels.forEach((carousel) => {
+          const items = carousel.querySelectorAll(".carousel-item");
+          currentIndex =
+            currentIndex === items.length - 1 ? 0 : currentIndex + 1;
+          updateCarousel(carousel, currentIndex);
+        });
+      }
+
+      document.querySelectorAll(".carousel").forEach((carousel) => {
+        updateCarousel(carousel, currentIndex);
+      });
+
+      const carouselItems = document.querySelectorAll(".carousel-item");
+      for (let i = 0; i < carouselItems.length; i++) {
+        const src = images[i];
+        const img = document.createElement("img");
+        img.setAttribute("src", src + "&_cachebusting=" + Math.random());
+        img.setAttribute("loading", "lazy");
+        img.setAttribute("style", " width: 100%;flex: 0 0 auto;");
+        carouselItems[i].append(img);
+      }
+      // setTimeout(() => {
+      //   window.scrollTo(0, document.body.scrollHeight);
+      // }, 10000);
+    </script>
+  </body>
+</html>
